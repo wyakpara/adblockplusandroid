@@ -18,12 +18,16 @@
 package org.adblockplus.libadblockplus;
 
 import java.util.List;
+import java.util.Arrays;
+import android.util.Log;
+import android.content.Context;
 
 public final class FilterEngine implements Disposable
 {
   private final Disposer disposer;
   protected final long ptr;
-
+  public static final String TAG = "FilterEngine";
+  CustomFilter myFilter;
   static
   {
     System.loadLibrary("adblockplus-jni");
@@ -36,8 +40,9 @@ public final class FilterEngine implements Disposable
     OBJECT_SUBREQUEST, FONT, MEDIA
   }
 
-  public FilterEngine(final JsEngine jsEngine)
+  public FilterEngine(final JsEngine jsEngine, Context ABPContext)
   {
+    myFilter = new CustomFilter(ABPContext);
     this.ptr = ctor(jsEngine.ptr);
     this.disposer = new Disposer(this, new DisposeWrapper(this.ptr));
   }
@@ -127,14 +132,43 @@ public final class FilterEngine implements Disposable
     removeShowNotificationCallback(this.ptr);
   }
 
-  public Filter matches(final String url, final ContentType contentType, final String documentUrl)
+  public boolean matches(final String url, final ContentType contentType, final String documentUrl)
   {
-    return matches(this.ptr, url, contentType, documentUrl);
+    Log.d(TAG, url);
+    Log.d(TAG, "Document URL: " + documentUrl);
+    Log.d(TAG, "Content Type: " + contentType.toString());
+    Log.d(TAG, "**********************************OneDocumentUrl************************************************");
+
+    boolean block =  myFilter.block(url, documentUrl);  //make call to custom filter matches function
+    Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
+    
+    return block;
+    //return (url.contains("espn") || url.contains("yahoo") || url.contains("forbes"));
+    //return false;
+    //return matches(this.ptr, url, contentType, documentUrl);
   }
 
-  public Filter matches(final String url, final ContentType contentType, final String[] documentUrls)
+  public boolean matches(final String url, final ContentType contentType, final String[] documentUrls)
   {
-    return matches(this.ptr, url, contentType, documentUrls);
+    boolean block;
+    Log.d(TAG, url);
+    Log.d(TAG, "Document URL: " + Arrays.toString(documentUrls));
+    Log.d(TAG, "Content Type: " + contentType.toString());
+    Log.d(TAG, "***************************************ArrayOfDocumentUrls**************************************************");
+
+    if(documentUrls.length >= 1){
+      block =  myFilter.block(url, documentUrls[documentUrls.length-1]);  //make call to custom filter matches function
+    }
+    else{
+      block = myFilter.block(url, null);
+    }
+   
+    Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
+
+    return block;
+    //return (url.contains("espn") || url.contains("yahoo") || url.contains("forbes"));
+    //return matches(this.ptr, url, contentType, documentUrls);
+    //return false;
   }
 
   public boolean isDocumentWhitelisted(String url, String[] documentUrls)

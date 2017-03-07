@@ -1,0 +1,93 @@
+package org.adblockplus.libadblockplus;
+
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+
+public class RegexRule implements Comparable<RegexRule>{
+
+	private Pattern[] exceptions;
+	private int numExceptions = 0;
+	private Pattern regex;
+
+	public RegexRule(Pattern rule){	//basic constructor for rules that don't have exceptions
+		numExceptions = 0;
+		exceptions = null;
+		regex = rule;
+	}
+
+
+	public RegexRule(Pattern rule, String[] excepStrings){
+
+		this(rule);	//call the basic constructor
+
+		// Sub-regex to potentially match http://, https://
+        String http = "(?:https?:\\/\\/)?";
+        // Sub-regex to potentially match anything not containing a /, ending with @ or .
+        String subdomains = "(?:[^\\/]*[@\\.])?";
+        // Sub-regex to potentially match the path following the domain (starts with /)
+        String path = "(?:\\/.*)?";
+
+        System.out.println(rule.toString());
+        exceptions = new Pattern[excepStrings.length];
+
+		if(excepStrings != null && excepStrings.length != 0){	//if there is a valid array of exceptions, override values from basic constructor
+			numExceptions = excepStrings.length;	//assume array of exceptions is well-formed and has no extra space, so the size of the array is the number of exceptions
+
+			for(int i = 0; i < excepStrings.length; i++){	//compile each domain exception string to a pattern and store in exceptions array
+				exceptions[i] = Pattern.compile("^" + http + subdomains + addEscapeCharacters(excepStrings[i]) + path + "$");	//compile pattern with properly
+				//escaped exception domain string
+				System.out.println(exceptions[i].toString());
+				numExceptions++;
+			}
+
+		}
+
+	}
+
+	public String addEscapeCharacters(String exception){	//function to properly escape the periods in a domain string to make the string regex-conducive
+		String[] pieces = exception.split("\\.");//split the string on the periods
+		String s = "";//create blank string
+
+		for(int i = 0; i < pieces.length - 1; i++){//loop through first n-1 pieces and escape the periods that were between them
+			pieces[i] = pieces[i] + "\\.";
+			s += pieces[i];
+		}
+		if(pieces.length > 0){	//add the last piece back onto the string
+			s += pieces[pieces.length-1];
+		}		
+		return s;
+	}
+
+	public int compareTo(RegexRule compare){	//returns -1,0, or 1 if compare is greater than, equal to, or less than this(respectively). Throws nullpointer exception if compare is null
+
+		if(this.getNumExceptions() > compare.getNumExceptions()){
+			return 1;
+		}
+		else if(this.getNumExceptions() == compare.getNumExceptions()){
+			return 0;
+		}
+		else{
+			return -1;
+		}
+
+	}
+
+	public int getNumExceptions(){
+		return numExceptions;
+	}
+
+	public Pattern[] getExceptions(){
+		return exceptions;
+	}
+
+	public boolean hasExceptions(){
+		return (numExceptions > 0);		
+	}
+
+	public boolean matches(String request){	//returns true if given string matches regex, false otherwise
+		Matcher m = regex.matcher(request);
+	 	return m.find();
+	}
+
+}

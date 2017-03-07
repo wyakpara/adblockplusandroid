@@ -24,6 +24,8 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.regex.Pattern;
 
+
+
 import org.adblockplus.libadblockplus.FilterEngine.ContentType;
 import org.apache.commons.lang.StringUtils;
 
@@ -45,19 +47,22 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
+
 public class AdblockPlus extends Application
 {
   public static final int ONGOING_NOTIFICATION_ID = R.string.app_name;
   public static final int UPDATE_NOTIFICATION_ID = R.string.app_name + 1;
   public static final int SERVER_NOTIFICATION_ID = R.string.app_name + 2;
 
-  private static final String TAG = Utils.getTag(AdblockPlus.class);
+  //private static final String TAG = Utils.getTag(AdblockPlus.class);
+  private static final String TAG = "AdblockPlus";
 
   private static final Pattern RE_JS = Pattern.compile("\\.js$", Pattern.CASE_INSENSITIVE);
   private static final Pattern RE_CSS = Pattern.compile("\\.css$", Pattern.CASE_INSENSITIVE);
   private static final Pattern RE_IMAGE = Pattern.compile("\\.(?:gif|png|jpe?g|bmp|ico)$", Pattern.CASE_INSENSITIVE);
   private static final Pattern RE_FONT = Pattern.compile("\\.(?:ttf|woff)$", Pattern.CASE_INSENSITIVE);
   private static final Pattern RE_HTML = Pattern.compile("\\.html?$", Pattern.CASE_INSENSITIVE);
+
 
   /**
    * Broadcasted when filtering is enabled or disabled.
@@ -323,6 +328,10 @@ public class AdblockPlus extends Application
   public boolean matches(final String url, final String query, final String referrer, final String accept)
   {
     final String fullUrl = StringUtils.isNotEmpty(query) ? url + "?" + query : url;
+    
+    //Zach Tag
+    Log.d(TAG, fullUrl + "  " + referrer);
+
     if (referrer != null)
       referrerMapping.add(fullUrl, referrer);
 

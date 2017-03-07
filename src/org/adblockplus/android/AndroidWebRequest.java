@@ -35,7 +35,8 @@ import android.util.Log;
 
 public class AndroidWebRequest extends WebRequest
 {
-  public final static String TAG = Utils.getTag(WebRequest.class);
+  //public final static String TAG = Utils.getTag(WebRequest.class); //Zach Change
+  public final static String TAG = "AndroidWebRequest";
 
   private final HashSet<String> subscriptionURLs = new HashSet<String>();
   private final boolean elemhideEnabled;
@@ -94,7 +95,7 @@ public class AndroidWebRequest extends WebRequest
 
         if (!this.elemhideEnabled && isListedSubscriptionUrl(url))
         {
-          Log.d(TAG, "Removing element hiding rules from: '" + url + "'");
+          Log.d(TAG, "Removing element hiding rules from: '" + url);
 
           String line;
           while ((line = reader.readLine()) != null)

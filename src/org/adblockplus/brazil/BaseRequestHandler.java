@@ -23,6 +23,7 @@ import sunlabs.brazil.server.Handler;
 import sunlabs.brazil.server.Request;
 import sunlabs.brazil.server.Server;
 import sunlabs.brazil.util.http.MimeHeaders;
+import android.util.Log;
 
 public abstract class BaseRequestHandler implements Handler
 {
@@ -30,6 +31,7 @@ public abstract class BaseRequestHandler implements Handler
   public static final String PROXY_HOST = "proxyHost";
   public static final String PROXY_PORT = "proxyPort";
   public static final String AUTH = "auth";
+  public static final String TAG = "BaseRequestHandler";
   protected String proxyHost;
   protected int proxyPort = 80;
   protected String auth;
@@ -56,8 +58,9 @@ public abstract class BaseRequestHandler implements Handler
     }
 
     auth = props.getProperty(prefix + AUTH);
-
-    shouldLogHeaders = (server.props.getProperty(prefix + "proxylog") != null);
+   
+    //shouldLogHeaders = (server.props.getProperty(prefix + "proxylog") != null);
+    shouldLogHeaders = true;
 
     return true;
   }
@@ -86,6 +89,9 @@ public abstract class BaseRequestHandler implements Handler
       sb.append(prompt).append(headers.getKey(i));
       sb.append(": ").append(headers.get(i)).append("\n");
     }
+
+     Log.d(TAG, request.url);
+    
     return (sb.toString());
   }
 }

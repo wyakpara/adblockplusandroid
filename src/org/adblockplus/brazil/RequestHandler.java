@@ -89,9 +89,11 @@ public class RequestHandler extends BaseRequestHandler
 
   private static final AtomicLong BLOCKED_REQUESTS = new AtomicLong();
   private static final AtomicLong UNBLOCKED_REQUESTS = new AtomicLong();
+  public static final String TAG = "RequestHandler";
 
   public static long getBlockedRequestCount()
   {
+    Log.d(TAG, Long.valueOf(BLOCKED_REQUESTS.get()).toString());
     return BLOCKED_REQUESTS.get();
   }
 
@@ -125,6 +127,9 @@ public class RequestHandler extends BaseRequestHandler
     {
       Log.e(prefix, "Filter error", e);
     }
+
+    //////Zach Change
+    Log.d(TAG, request.url);
 
     request.log(Server.LOG_LOG, prefix, block + ": " + request.url);
 

@@ -41,7 +41,10 @@ import android.util.Log;
 
 public final class ABPEngine
 {
-  private static final String TAG = Utils.getTag(ABPEngine.class);
+  //private static final String TAG = Utils.getTag(ABPEngine.class);
+  private static final String TAG = "ABPEngine";
+
+
 
   private final Context context;
 
@@ -65,9 +68,10 @@ public final class ABPEngine
   private volatile FilterChangeCallback filterChangeCallback;
   private volatile ShowNotificationCallback showNotificationCallback;
   private final boolean elemhideEnabled;
-
+  private static Context myContext;
   private ABPEngine(final Context context, final boolean enableElemhide)
   {
+    myContext = context;
     this.context = context;
     this.elemhideEnabled = enableElemhide;
   }
@@ -116,7 +120,7 @@ public final class ABPEngine
     engine.webRequest = new AndroidWebRequest(enableElemhide);
     engine.jsEngine.setWebRequest(engine.webRequest);
 
-    engine.filterEngine = new FilterEngine(engine.jsEngine);
+    engine.filterEngine = new FilterEngine(engine.jsEngine, myContext);		///Zach Change, pass context to FilterEngine so Json can be parsed
 
     engine.webRequest.updateSubscriptionURLs(engine.filterEngine);
 
@@ -273,12 +277,15 @@ public final class ABPEngine
 
   public boolean matches(final String fullUrl, final ContentType contentType, final String[] referrerChainArray)
   {
-    final Filter filter = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
+    //final Filter filter = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
+    boolean response = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
+    Log.d(TAG, fullUrl);
+    ///Zach Change
 
-    if (filter == null)
+    /*if (filter == null)
     {
       return false;
-    }
+    } 
 
     // hack: if there is no referrer, block only if filter is domain-specific
     // (to re-enable in-app ads blocking, proposed on 12.11.2012 Monday meeting)
@@ -289,6 +296,8 @@ public final class ABPEngine
     }
 
     return filter.getType() != Filter.Type.EXCEPTION;
+    */
+    return response;
   }
 
   public boolean isDocumentWhitelisted(final String url, final String[] referrerChainArray)

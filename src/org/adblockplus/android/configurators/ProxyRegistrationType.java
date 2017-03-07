@@ -17,6 +17,7 @@
 
 package org.adblockplus.android.configurators;
 
+import android.util.Log;
 import org.adblockplus.android.ProxyServerType;
 
 public enum ProxyRegistrationType
@@ -29,6 +30,7 @@ public enum ProxyRegistrationType
 
   private final ProxyServerType proxyType;
   private final boolean autoConfigured;
+  private static final String TAG = "ProxyType";
 
   private ProxyRegistrationType(final ProxyServerType proxyType, final boolean autoConfigured)
   {
@@ -38,6 +40,7 @@ public enum ProxyRegistrationType
 
   public ProxyServerType getProxyType()
   {
+    Log.d(TAG, proxyType.toString() + " auto configured: " + autoConfigured);
     return this.proxyType;
   }
 

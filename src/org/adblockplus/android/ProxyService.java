@@ -51,13 +51,17 @@ import android.util.Log;
 
 public class ProxyService extends Service implements OnSharedPreferenceChangeListener
 {
-  private static final String TAG = Utils.getTag(ProxyService.class);
+  //private static final String TAG = Utils.getTag(ProxyService.class); //Zach change
+
+  private static final String TAG = "AdblockRequest";
+
 
   private static final String LOCALHOST = "127.0.0.1";
 
   private static final int[] PORT_VARIANTS = new int[] {-1, 2020, 3030, 4040, 5050, 6060, 7070, 9090, 1234, 12345, 4321, 0};
 
-  private static final boolean LOG_REQUESTS = false;
+  private static final boolean LOG_REQUESTS = true;
+  //zach changed
 
   private static final long POSITION_RIGHT = Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD ? Long.MIN_VALUE : Long.MAX_VALUE;
 

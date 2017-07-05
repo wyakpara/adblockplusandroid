@@ -89,7 +89,7 @@ public class RegexRuleList{
 			System.err.println("An error occurred while parsing the policy language");
 		}
 		
-		Log.d(TAG, "BEGINNING FILE DUMP");
+		// Log.d(TAG, "BEGINNING FILE DUMP");
 		
 		// Log.d(TAG, reader.toString());
 		
@@ -106,78 +106,97 @@ public class RegexRuleList{
 		
 		
 		// String name;
-		Log.d(TAG, "Attempting to parse file");
-		try
-		{
-			JsonToken thePeek;
-			boolean foundPattern = false, foundDomains = false;
-			while(reader.hasNext()) {
-				thePeek = reader.peek();
-				Log.d(TAG, "Peek: " + thePeek);
-				if(thePeek == JsonToken.NAME)
-				{
-					name = reader.nextName();
-				}
-				else if(thePeek == JsonToken.BEGIN_ARRAY)
-				{
-					Log.d(TAG, "Beginning Array");
-					reader.beginArray();
-				}
-				else if(thePeek == JsonToken.END_ARRAY)
-				{
-					Log.d(TAG, "Ending Array");
-					reader.endArray();
-				}
-				else if(thePeek == JsonToken.BEGIN_OBJECT)
-				{
-					Log.d(TAG, "Beginning Object");
-					reader.beginObject();
-				}
-				else if(thePeek == JsonToken.END_OBJECT)
-				{
-					Log.d(TAG, "Ending Object");
-					reader.endObject();
-				}
-// 				name = reader.nextName();
-// 				Log.d(TAG, "Peek: " + reader.peek());
-				if(name.equals("Version"))
-				{
-					Log.d(TAG, "Printing Version");
-					Log.d(TAG, "" + reader.nextDouble());
-				}
-				else if(name.equals("pattern"))
-				{
-					Log.d(TAG, "Found Pattern");
-					foundPattern = true;
-					pattern = reader.nextString();
-					// Log.d(TAG, reader.nextString());
-					
-				}
-				else if(name.equals("allowDomain"))
-				{
-					Log.d(TAG, "Found allowed domains");
-					foundDomains = true;
-					domains = reader.nextString();
-				}
-				else if (reader.peek() == JsonToken.STRING)//(reader.peek() != JsonToken.BEGIN_ARRAY && reader.peek() != JsonToken.END_ARRAY && reader.peek() != JsonToken.BEGIN_OBJECT && reader.peek() != JsonToken.END_OBJECT)
-				{
-					// Log.d(TAG, "Printing whatever");
-					// Log.d(TAG, reader.nextString());
-					reader.nextString();
-				}
-				
-				if(foundDomains && foundPattern)
-					break;
-			}
-			Log.d(TAG, "Entering RegexRule for " + pattern);
-			addRule(new RegexRule(Pattern.compile(pattern),parseAllowedDomains(domains)));
-		}
-		catch(IOException i)
-		{
-			Log.d(TAG, "Exception occurred during policy parse");
-			i.printStackTrace();
-			Log.d(TAG, "Error reading file");
-		}
+		// try{
+			// while(reader.hasNext())
+			// {
+// 				GetRule(reader);
+// 			}
+			AddRules(reader);
+		// }catch(IOException i)
+		// {
+		// 	Log.d(TAG, "Exception occurred during policy parse");
+		// 	i.printStackTrace();
+		// 	Log.d(TAG, "Error reading file");
+		// }
+		
+		/*-------------------------------------------------------*/
+// 		Log.d(TAG, "Attempting to parse file");
+// 		try
+// 		{
+// 			JsonToken thePeek;
+// 			boolean foundPattern = false, foundDomains = false;
+// 			while(reader.hasNext()) {
+//
+// 				// For each rule get ourselves a pre-regex
+//
+// 				thePeek = reader.peek();
+// 				Log.d(TAG, "Peek: " + thePeek);
+// 				if(thePeek == JsonToken.NAME)
+// 				{
+// 					name = reader.nextName();
+// 				}
+// 				else if(thePeek == JsonToken.BEGIN_ARRAY)
+// 				{
+// 					Log.d(TAG, "Beginning Array");
+// 					reader.beginArray();
+// 				}
+// 				else if(thePeek == JsonToken.END_ARRAY)
+// 				{
+// 					Log.d(TAG, "Ending Array");
+// 					reader.endArray();
+// 				}
+// 				else if(thePeek == JsonToken.BEGIN_OBJECT)
+// 				{
+// 					Log.d(TAG, "Beginning Object");
+// 					reader.beginObject();
+// 				}
+// 				else if(thePeek == JsonToken.END_OBJECT)
+// 				{
+// 					Log.d(TAG, "Ending Object");
+// 					reader.endObject();
+// 				}
+// // 				name = reader.nextName();
+// // 				Log.d(TAG, "Peek: " + reader.peek());
+// 				if(name.equals("Version"))
+// 				{
+// 					Log.d(TAG, "Printing Version");
+// 					Log.d(TAG, "" + reader.nextDouble());
+// 				}
+// 				else if(name.equals("pattern"))
+// 				{
+// 					Log.d(TAG, "Found Pattern");
+// 					foundPattern = true;
+// 					pattern = reader.nextString();
+// 					// Log.d(TAG, reader.nextString());
+//
+// 				}
+// 				else if(name.equals("allowDomain"))
+// 				{
+// 					Log.d(TAG, "Found allowed domains");
+// 					foundDomains = true;
+// 					domains = reader.nextString();
+// 				}
+// 				else if (reader.peek() == JsonToken.STRING)//(reader.peek() != JsonToken.BEGIN_ARRAY && reader.peek() != JsonToken.END_ARRAY && reader.peek() != JsonToken.BEGIN_OBJECT && reader.peek() != JsonToken.END_OBJECT)
+// 				{
+// 					// Log.d(TAG, "Printing whatever");
+// 					// Log.d(TAG, reader.nextString());
+// 					reader.nextString();
+// 				}
+//
+// 				if(foundDomains && foundPattern)
+// 					break;
+// 			}
+// 			Log.d(TAG, "Entering RegexRule for " + pattern);
+// 			addRule(new RegexRule(Pattern.compile(pattern),parseAllowedDomains(domains)));
+// 		}
+// 		catch(IOException i)
+// 		{
+// 			Log.d(TAG, "Exception occurred during policy parse");
+// 			i.printStackTrace();
+// 			Log.d(TAG, "Error reading file");
+// 		}
+
+		/*-------------------------------------------------------*/
 		
 				//
 		// boolean readernext = true;
@@ -249,6 +268,130 @@ public class RegexRuleList{
 		///TODO: add list parsing here, read in rules and use addRule method to add them to rules array, XML or JSON from android/java library, sort by exceptions after reading all rules
 		
 	}
+	
+	// Parse file until we find a name we want
+	// Parse that object, and grab everything from it
+	// if we find a nested object, throw error 'cause that shouldn't happen
+	public void AddRules(JsonReader reader) {
+		Pregex theRule = new Pregex();
+		try
+		{
+			// reader.setLenient(true);
+			JsonToken thePeek;
+	        String name = null;
+			boolean ruleInProgress = false, ruleObjectStarted = false;
+			// while(reader.hasNext() || reader.peek() != JsonToken.END_DOCUMENT) {
+			while(reader.peek() != JsonToken.END_DOCUMENT) {
+				thePeek = reader.peek();
+				Log.d(TAG, "Peek: " + thePeek);
+				if(thePeek == JsonToken.NAME)
+				{
+					name = reader.nextName();
+				}
+				else if(thePeek == JsonToken.NUMBER)
+				{
+					reader.nextInt();
+				}
+				else if(thePeek == JsonToken.BOOLEAN)
+				{
+					reader.nextBoolean();
+				}
+				else if(thePeek == JsonToken.BEGIN_ARRAY)
+				{
+					Log.d(TAG, "Beginning Array");
+					reader.beginArray();
+				}
+				else if(thePeek == JsonToken.END_ARRAY)
+				{
+					Log.d(TAG, "Ending Array");
+					reader.endArray();
+				}
+				else if(thePeek == JsonToken.BEGIN_OBJECT)
+				{
+					Log.d(TAG, "Beginning Object");
+					reader.beginObject();
+					if(ruleInProgress && ruleObjectStarted)
+						// Throw an error!
+						Log.d(TAG, "Error!");
+					if(ruleInProgress && !ruleObjectStarted)
+						ruleObjectStarted = true;
+				}
+				else if(thePeek == JsonToken.END_OBJECT)
+				{
+					Log.d(TAG, "Ending Object");
+					reader.endObject();
+					if(ruleObjectStarted)
+					{
+						Log.d(TAG, "Adding Rule");
+						ruleObjectStarted = false;
+						ruleInProgress = false;
+						addRule(theRule.makeRegex());
+						theRule.clear();
+					}
+				}
+				// For when we find something else.
+				else if (reader.peek() == JsonToken.STRING && !(name.equals("pattern") || name.equals("allowDomain")))
+				{
+					Log.d(TAG, "Found whatever");
+					// Log.d(TAG, reader.nextString());
+					reader.nextString();
+				}
+				
+				if(name.equals("script") || name.equals("image") || name.equals("iframe") || name.equals("object") || name.equals("subobject"))
+				{
+					// Grab the regex rule from this particular object somehow
+					ruleInProgress = true;
+				}
+
+				if(name.equals("pattern") && ruleInProgress)
+				{
+					
+					String pattern = reader.nextString();
+					Log.d(TAG, "Found Pattern " + pattern);
+					// theRule.addPattern(reader.nextString());
+					theRule.addPattern(pattern);
+					
+				}
+				else if(name.equals("allowDomain") && ruleInProgress)
+				{
+					Log.d(TAG, "Found allowed domains");
+					// foundDomains = true;
+					// domains = reader.nextString();
+					theRule.addAllowedDomains(reader.nextString());
+				}
+				
+
+		        name = "";
+				
+				if(!reader.hasNext() && (ruleObjectStarted || ruleInProgress))
+				{
+					Log.d(TAG, "Adding last Rule");
+					ruleObjectStarted = false;
+					ruleInProgress = false;
+					addRule(theRule.makeRegex());
+					theRule.clear();
+				}
+				
+				// else
+// 				{
+// 					Log.d(TAG, "Well this isnt right.");
+// 				}
+			}
+			Log.d(TAG, "Exiting file add");
+		}
+		catch(IOException i)
+		{
+			Log.d(TAG, "Exception occurred during policy parse");
+			i.printStackTrace();
+			Log.d(TAG, "Error reading file");
+		}
+		
+		
+		// if(reader.peek() == JsonToken.NAME) {
+		// 	if(reader.name().equals)
+		// }
+	}
+	
 	public void addRule(RegexRule ruleToAdd){			//add them in unsorted order then sort at the end of the constructor??
 		if(rules.length == numRules){					//if array has no room
 			rules = Arrays.copyOf(rules, (2*rules.length));
@@ -256,7 +399,7 @@ public class RegexRuleList{
 		rules[numRules++] = ruleToAdd;
 	}
 	
-	public String[] parseAllowedDomains(String domains){
+	private String[] parseAllowedDomains(String domains){
 		String[] domainArray = new String[50];
 		int numDomains = 0;
 		int start = 0, end = 0, index;
@@ -270,19 +413,61 @@ public class RegexRuleList{
 			}
 			if(parser.charAt(index) == '(')
 			{
-				Log.d(TAG, "Start of domain");
+				// Log.d(TAG, "Start of domain");
 				start = index + 1;
 			}
 			if(parser.charAt(index) == ')')
 			{
-				Log.d(TAG, "End of domain");
+				// Log.d(TAG, "End of domain");
 				end = index;
 				domainArray[numDomains++] = parser.substring(start,end);
-				Log.d(TAG, "domain: " + domainArray[numDomains - 1]);
+				// Log.d(TAG, "domain: " + domainArray[numDomains - 1]);
 			}
 		}
 		domainArray = Arrays.copyOf(domainArray, numDomains);
 		return domainArray;
+	}
+	
+	private class Pregex {
+		private String pattern;
+		private String[] allowedDomains;
+		
+		private Pregex() {}
+		
+		private void addPattern(String newPattern) {
+			pattern = newPattern;
+		}
+		
+		private void addAllowedDomains(String newDomains) {
+			allowedDomains = parseAllowedDomains(newDomains);
+		}
+		
+		// We don't need a non-null allowedDomains array.
+		private boolean isReady() {
+			if(pattern != null)
+				return true;
+			else
+				return false;
+		}
+		
+		private boolean hasAllowedDomains() {
+			if(allowedDomains == null)
+				return false;
+			else
+				return true;
+		}
+		
+		private void clear() {
+			pattern = null;
+			allowedDomains = null;
+		}
+		
+		private RegexRule makeRegex() {
+			if(this.hasAllowedDomains())
+				return new RegexRule(Pattern.compile(pattern), allowedDomains);
+			else
+				return new RegexRule(Pattern.compile(pattern));
+		}
 	}
 	
 	public RuleIteratorInterface iterator(String request){
@@ -315,7 +500,9 @@ public class RegexRuleList{
 			while(hasNext()){	
 
 				temp = next();
-
+				// Log.d(TAG, "CALLING MATCHES!?");
+				
+				
 				if(temp.matches(request)){		//use matcher.find() to simplify regex construction
 					return temp;
 				}

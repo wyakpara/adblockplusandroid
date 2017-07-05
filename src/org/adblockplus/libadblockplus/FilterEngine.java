@@ -150,11 +150,13 @@ public final class FilterEngine implements Disposable
 
   public boolean matches(final String url, final ContentType contentType, final String[] documentUrls)
   {
+	int numBlocks = 0;
+	int numTries = 0;
     boolean block;
-    Log.d(TAG, url);
-    Log.d(TAG, "Document URL: " + Arrays.toString(documentUrls));
-    Log.d(TAG, "Content Type: " + contentType.toString());
-    Log.d(TAG, "***************************************ArrayOfDocumentUrls**************************************************");
+    // Log.d(TAG, url);
+    // Log.d(TAG, "Document URL: " + Arrays.toString(documentUrls));
+    // Log.d(TAG, "Content Type: " + contentType.toString());
+    // Log.d(TAG, "***************************************ArrayOfDocumentUrls**************************************************");
 
     if(documentUrls.length >= 1){
       block =  myFilter.block(url, documentUrls[documentUrls.length-1]);  //make call to custom filter matches function
@@ -163,7 +165,14 @@ public final class FilterEngine implements Disposable
       block = myFilter.block(url, null);
     }
    
-    Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
+    // Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
+	if(block)
+		Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
+	// Checking number of blocked elements
+	if(block)
+		numBlocks++;
+	numTries++;
+		
 
     return block;
     //return (url.contains("espn") || url.contains("yahoo") || url.contains("forbes"));

@@ -16,6 +16,8 @@ public class CustomFilter{
 	}
 		
 	public boolean block(String requestUrl, String referrer){ 
+		int numRequests;
+		int numBlocks;
 		
 		boolean blocked = false;
 		RuleIteratorInterface iter = rules.iterator(requestUrl);

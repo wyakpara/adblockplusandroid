@@ -69,6 +69,13 @@ public final class ABPEngine
   private volatile ShowNotificationCallback showNotificationCallback;
   private final boolean elemhideEnabled;
   private static Context myContext;
+  
+  // Aric Change
+  private static int numRequests = 0;
+  private static int numBlocks = 0;
+  private static int toPrint = 0;
+  // end Aric Change
+  
   private ABPEngine(final Context context, final boolean enableElemhide)
   {
     myContext = context;
@@ -280,6 +287,10 @@ public final class ABPEngine
     //final Filter filter = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
     boolean response = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
     Log.d(TAG, fullUrl);
+	numRequests++;
+	toPrint++;
+	if(response)
+		numBlocks++;
     ///Zach Change
 
     /*if (filter == null)
@@ -297,6 +308,14 @@ public final class ABPEngine
 
     return filter.getType() != Filter.Type.EXCEPTION;
     */
+	
+	// Every ten, we print
+	if(toPrint == 10)
+	{
+		Log.d(TAG, "------------------------------- REQUEST DATA -------------------------------");
+		Log.d(TAG, "Number of Requests: " + numRequests + "\nNumber of Blocks: " + numBlocks);
+		toPrint = 0;
+	}
     return response;
   }
 

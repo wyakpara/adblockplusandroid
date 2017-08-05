@@ -2,24 +2,31 @@ package org.adblockplus.libadblockplus;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.net.URI;
+import java.net.URISyntaxException;
 
+import android.util.Log;
 
 public class RegexRule implements Comparable<RegexRule>{
 
 	private Pattern[] exceptions;
 	private int numExceptions = 0;
 	private Pattern regex;
+	private String[] domains;
 
-	public RegexRule(Pattern rule){	//basic constructor for rules that don't have exceptions
+	private final String TAG = "RegexRule";
+
+	public RegexRule(Pattern rule, String[] theDomains){	//basic constructor for rules that don't have exceptions
 		numExceptions = 0;
 		exceptions = null;
 		regex = rule;
+		domains = theDomains;
 	}
 
 
-	public RegexRule(Pattern rule, String[] excepStrings){
+	public RegexRule(Pattern rule, String[] excepStrings, String[] theDomains){
 
-		this(rule);	//call the basic constructor
+		this(rule, theDomains);	//call the basic constructor
 
 		// Sub-regex to potentially match http://, https://
         String http = "(?:https?:\\/\\/)?";
@@ -84,10 +91,43 @@ public class RegexRule implements Comparable<RegexRule>{
 	public boolean hasExceptions(){
 		return (numExceptions > 0);		
 	}
+	
+	public boolean domainMatch(String requestUrl) {
+		URI uri;
+		String requestDomain = "";
+		try{
+			uri = new URI(requestUrl);
+			requestDomain = uri.getHost();
+		} catch(URISyntaxException e) {
+			Log.d(TAG, "Invalid Domain.");
+		}
+		
+		// Log.d(TAG, "Request domain: " + requestDomain);
+		
+		for(int i = 0; i < domains.length; i++) {
+			if(domains[i].equals(requestDomain) || domains[i].equals("*"))
+				return true;
+		}
+		return false;
+	}
 
 	public boolean matches(String request){	//returns true if given string matches regex, false otherwise
-		Matcher m = regex.matcher(request);
-	 	return m.find();
+		if(domainMatch(request))
+		{
+			if(regex != null)
+			{
+				Matcher m = regex.matcher(request);
+			 	return m.find();
+			}
+			else
+				return true;
+		}
+		else
+			return false;
+	}
+	
+	public String regexToString() {
+		return regex.toString();
 	}
 
 }

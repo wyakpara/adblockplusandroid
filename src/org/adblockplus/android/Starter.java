@@ -23,9 +23,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import android.util.Log; // Aric change
+
 public class Starter extends BroadcastReceiver
 {
 
+  private static final String TAG = "Starter";
   @Override
   public void onReceive(final Context context, final Intent intent)
   {
@@ -51,6 +54,7 @@ public class Starter extends BroadcastReceiver
     {
       final AdblockPlus application = AdblockPlus.getApplication();
       application.setFilteringEnabled(true);
+	  Log.d(TAG, "Starting Engine"); // Aric Change
       application.startEngine();
     }
     if (enabled || (proxyenabled && !autoconfigured))

@@ -20,6 +20,7 @@ public class CustomFilter{
 		int numBlocks;
 		
 		boolean blocked = false;
+		
 		RuleIteratorInterface iter = rules.iterator(requestUrl);
 		matchedRule = iter.getNextMatch(); //call to an iterator that returns the next rule that matches the request, returns null if no more matches are found
 		//Log.d("CustomFilter", "CustomFilter block function called URL: " + requestUrl + " referrer : " + referrer + "\n");
@@ -36,6 +37,11 @@ public class CustomFilter{
 			
 			matchedRule = iter.getNextMatch();//if we have not returned by this point then get the next matched rule until there are no more. 
 		
+		}
+		
+		if(blocked) {
+			Log.d("BlockedURL", "Blocked URL: " + requestUrl);
+			Log.d("BlockedURL", "Matched Rule: " + matchedRule.regexToString());
 		}
 		//Log.d("CustomFilter", "final decision: " + blocked + "\n");
 		return blocked;	//when matchedRule == null and the loop finishes execution this means there are no more matches to this rule, so false is returned

@@ -134,13 +134,13 @@ public final class FilterEngine implements Disposable
 
   public boolean matches(final String url, final ContentType contentType, final String documentUrl)
   {
-    Log.d(TAG, url);
-    Log.d(TAG, "Document URL: " + documentUrl);
-    Log.d(TAG, "Content Type: " + contentType.toString());
-    Log.d(TAG, "**********************************OneDocumentUrl************************************************");
+    // Log.d(TAG, url);
+    // Log.d(TAG, "Document URL: " + documentUrl);
+    // Log.d(TAG, "Content Type: " + contentType.toString());
+    // Log.d(TAG, "**********************************OneDocumentUrl************************************************");
 
     boolean block =  myFilter.block(url, documentUrl);  //make call to custom filter matches function
-    Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
+    // Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
     
     return block;
     //return (url.contains("espn") || url.contains("yahoo") || url.contains("forbes"));
@@ -166,8 +166,8 @@ public final class FilterEngine implements Disposable
     }
    
     // Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
-	if(block)
-		Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
+	// if(block)
+	// 	Log.d(TAG, "FILTER ENGINE FUNCTION CALLED, BLOCK  = " + block);
 	// Checking number of blocked elements
 	if(block)
 		numBlocks++;

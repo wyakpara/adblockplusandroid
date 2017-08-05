@@ -43,6 +43,7 @@ public final class ABPEngine
 {
   //private static final String TAG = Utils.getTag(ABPEngine.class);
   private static final String TAG = "ABPEngine";
+  private static final String TTAG = "TestTimer";
 
 
 
@@ -285,12 +286,14 @@ public final class ABPEngine
   public boolean matches(final String fullUrl, final ContentType contentType, final String[] referrerChainArray)
   {
     //final Filter filter = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
+	long startTime = System.nanoTime();
     boolean response = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
-    Log.d(TAG, fullUrl);
-	numRequests++;
-	toPrint++;
-	if(response)
-		numBlocks++;
+	long endTime = System.nanoTime() - startTime;
+	Log.d(TTAG, "Time: " + endTime);
+    // Log.d(TAG, fullUrl);
+	// numRequests++;
+	// if(response)
+	// 	numBlocks++;.m
     ///Zach Change
 
     /*if (filter == null)
@@ -310,12 +313,14 @@ public final class ABPEngine
     */
 	
 	// Every ten, we print
-	if(toPrint == 10)
-	{
-		Log.d(TAG, "------------------------------- REQUEST DATA -------------------------------");
-		Log.d(TAG, "Number of Requests: " + numRequests + "\nNumber of Blocks: " + numBlocks);
-		toPrint = 0;
-	}
+	
+	// if(numrequests%10 == 0) // change to mod 10
+	// {
+	// 	Log.d(TAG, "------------------------------- REQUEST DATA -------------------------------");
+	// 	Log.d(TAG, "Number of Requests: " + numRequests + "\nNumber of Blocks: " + numBlocks);
+	//
+	// 	toPrint = 0;
+	// }
     return response;
   }
 

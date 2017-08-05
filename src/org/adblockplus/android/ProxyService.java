@@ -49,12 +49,15 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+
+
 public class ProxyService extends Service implements OnSharedPreferenceChangeListener
 {
   //private static final String TAG = Utils.getTag(ProxyService.class); //Zach change
 
   private static final String TAG = "AdblockRequest";
 
+  // private static int numrequests = 0;
 
   private static final String LOCALHOST = "127.0.0.1";
 
@@ -593,8 +596,17 @@ public class ProxyService extends Service implements OnSharedPreferenceChangeLis
     @Override
     public void log(final int level, final Object obj, final String message)
     {
+		// static int numrequests = 0;
       if (level <= logLevel)
       {
+		  // Log.d(TAG, "-------------------- PEEKABOO --------------");
+		  // Log.d(TAG, "message: " + message);
+		  // if(message.equals("request done"));
+ // 		  {
+ // 		  			  numrequests++;
+ // 		  			  if(numrequests%10 == 0)
+ // 		  				  Log.d(TAG, "***--------- CHECK IT OUT ---------*** \nNumber of Requests: " + numrequests);
+ // 		  }
         Log.println(7 - level, obj != null ? obj.toString() : TAG, message);
       }
     }

@@ -102,11 +102,20 @@ public class RegexRule implements Comparable<RegexRule>{
 			Log.d(TAG, "Invalid Domain.");
 		}
 		
-		// Log.d(TAG, "Request domain: " + requestDomain);
+		// Log.d("RequestDomain", "Request URL: " + requestUrl);
+		// Log.d("RequestDomain", "Request domain: " + requestDomain);
 		
 		for(int i = 0; i < domains.length; i++) {
-			if(domains[i].equals(requestDomain) || domains[i].equals("*"))
-				return true;
+			// if(domains[i].equals(requestDomain.substring(requestDomain.length() - domains[i].length())) || domains[i].equals("*"))
+			if(requestDomain.endsWith(domains[i]) || requestDomain.equals(domains[i]) || domains[i].equals("*"))
+				{
+					// if(domains[i].equals(requestDomain.substring(requestDomain.length() - domains[i].length()))
+					if(requestDomain.endsWith(domains[i]) || requestDomain.equals(domains[i]))
+						Log.d("RequestDomain", "Blocked with " + domains[i]);
+					// else
+					// 	Log.d("RequestDomain", "Blocked using *");
+					return true;
+				}
 		}
 		return false;
 	}

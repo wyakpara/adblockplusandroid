@@ -107,7 +107,7 @@ public class RegexRule implements Comparable<RegexRule>{
 		
 		for(int i = 0; i < domains.length; i++) {
 			// if(domains[i].equals(requestDomain.substring(requestDomain.length() - domains[i].length())) || domains[i].equals("*"))
-			if(requestDomain.endsWith(domains[i]) || requestDomain.equals(domains[i]) || domains[i].equals("*"))
+			if(domains[i].equals("*") || (requestDomain.endsWith(domains[i]) && requestDomain.charAt(requestDomain.length() - domains[i].length() - 1) == '.') || requestDomain.equals(domains[i]))
 				{
 					// if(domains[i].equals(requestDomain.substring(requestDomain.length() - domains[i].length()))
 					if(requestDomain.endsWith(domains[i]) || requestDomain.equals(domains[i]))

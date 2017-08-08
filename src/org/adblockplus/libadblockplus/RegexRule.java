@@ -108,17 +108,18 @@ public class RegexRule implements Comparable<RegexRule>{
 		for(int i = 0; i < domains.length; i++) {
 			// if(domains[i].equals(requestDomain.substring(requestDomain.length() - domains[i].length())) || domains[i].equals("*"))
 			if(domains[i].equals("*") || requestDomain.equals(domains[i]))
-				{
-					// if(domains[i].equals(requestDomain.substring(requestDomain.length() - domains[i].length()))
-					Log.d("RequestDomain", "Blocked with " + domains[i]);
-					return true;
-				}
-				// We cannot just check that the request domain ends with the domain in the rule; we have to 
-				// make sure we won't overstep bounds in doing so.
-				else if(requestDomain.length() > domains[i] && (requestDomain.endsWith(domains[i]) && requestDomain.charAt(requestDomain.length() - domains[i].length() - 1) == '.'))
-					Log.d("RequestDomain", "Blocked with " + domains[i]);
-					return true;
-				}
+			{
+				// if(domains[i].equals(requestDomain.substring(requestDomain.length() - domains[i].length()))
+				Log.d("RequestDomain", "Blocked with " + domains[i]);
+				return true;
+			}
+			// We cannot just check that the request domain ends with the domain in the rule; we have to 
+			// make sure we won't overstep bounds in doing so.
+			else if(requestDomain.length() > domains[i].length() && (requestDomain.endsWith(domains[i]) && requestDomain.charAt(requestDomain.length() - domains[i].length() - 1) == '.'))
+			{
+				Log.d("RequestDomain", "Blocked with " + domains[i]);
+				return true;
+			}
 		}
 		return false;
 	}

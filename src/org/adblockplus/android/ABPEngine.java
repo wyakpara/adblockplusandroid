@@ -285,7 +285,6 @@ public final class ABPEngine
 
   public boolean matches(final String fullUrl, final ContentType contentType, final String[] referrerChainArray)
   {
-    //final Filter filter = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
 	long startTime = System.nanoTime();
     boolean response = this.filterEngine.matches(fullUrl, contentType, referrerChainArray);
 	long endTime = System.nanoTime() - startTime;
@@ -294,7 +293,7 @@ public final class ABPEngine
 	// numRequests++;
 	// if(response)
 	// 	numBlocks++;.m
-    ///Zach Change
+    // Zach Change
 
     /*if (filter == null)
     {

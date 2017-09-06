@@ -285,8 +285,8 @@ public class RegexRuleList{
 			while(reader.peek() != JsonToken.END_DOCUMENT) {
 				Log.d(TAG, "Number of Rules: " + numRules);
 				
-				// if(rules.length == 10)
-	// 				break;
+				// if(numRules == 1)
+				// 	break;
 				
 				thePeek = reader.peek();
 				Log.d(TAG, "Peek: " + thePeek);

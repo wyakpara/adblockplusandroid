@@ -7,8 +7,11 @@ import android.content.Context;
 
 public class CustomFilter{
 
+	private static int numExemptions = 0;
 	public RegexRuleList rules;		//collection of regex rules
 	public RegexRule matchedRule = null; //an object representing the individual regex rule that the requestUrl matches
+    public static final String EXEMPT = "Exempted";
+	
 	
 	public CustomFilter(Context ABPContext){
 		rules = new RegexRuleList();
@@ -58,6 +61,14 @@ public class CustomFilter{
 				if(exceptions[i].matcher(referrer).matches()){	//make a matcher on the pattern then call the matchers 'matches()' method
 					//TODO? Add logging here to see which exception was triggered?
 					//Log.d("CustomFilter", "THIS REFERRER IS AN EXCEPTION TO ITS RULE!");
+					numExemptions++;
+					Log.d(EXEMPT, "Number of Exceptions seen: " + numExemptions);
+					Log.d(EXEMPT, "Excepted: " + referrer);
+					Log.d(EXEMPT, "Exception: " + exceptions[i].toString());
+					// if(numExemptions%10 == 0)
+					// {
+					// 	Log.d(EXEMPT, "Number of Exceptions seen: " + numExemptions);
+					// }
 					result = true;
 					break;
 				}

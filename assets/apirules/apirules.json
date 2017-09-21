@@ -8797,7 +8797,7 @@
                     "category":"advertising",
                     "script":{
                         "domains":"adnetmedia.lt|adnet.lt|adnet.de",
-                        "pattern":"\\/(ad2_async|ad|conv\\/adCode_[0-9]+)\\.js|\\/ad[0-9]+\\.js|\\/js\\/tagman\\/public\\/async\\/adclick\\.lv\\.js.\\php|body-upper\\.js|body-upper-step2\\.js|\\/js\\/init-for-BBEposCodes-withExtra\\.js"
+                        "pattern":"\\/(ad2_async|ad|conv\\/adCode_[0-9]+)\\.js|\\/ad[0-9]+\\.js|\\/js\\/tagman\\/public\\/async\\/adclick\\.lv\\.js\\.php|body-upper\\.js|body-upper-step2\\.js|\\/js\\/init-for-BBEposCodes-withExtra\\.js"
                     }
                 }
             ]

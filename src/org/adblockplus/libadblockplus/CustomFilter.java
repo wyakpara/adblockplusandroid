@@ -7,10 +7,8 @@ import android.content.Context;
 
 public class CustomFilter{
 
-	private static int numExemptions = 0;
 	public RegexRuleList rules;		//collection of regex rules
 	public RegexRule matchedRule = null; //an object representing the individual regex rule that the requestUrl matches
-    public static final String EXEMPT = "Exempted";
 	
 	
 	public CustomFilter(Context ABPContext){
@@ -52,27 +50,24 @@ public class CustomFilter{
 	}
 
 	public boolean isExempted(RegexRule rule, String referrer){		//return false if this referrer is not exempt, true if an exception is triggered and the referrer is exempt
-		Pattern[] exceptions = rule.getExceptions();
+		// Pattern[] exceptions = rule.getExceptions();
+		String[] exceptions = rule.getExceptions();
 		boolean result = false;
 
 		if(rule.hasExceptions()){
-			for(int i = 0; i < exceptions.length; i++){
+			// for(int i = 0; i < exceptions.length; i++){
 				//Log.d("CustomFilter", "Pattern " + exceptions[i].toString() + " referrer " + referrer);
-				if(exceptions[i].matcher(referrer).matches()){	//make a matcher on the pattern then call the matchers 'matches()' method
+				// if(exceptions[i].matcher(referrer).matches()){	//make a matcher on the pattern then call the matchers 'matches()' method
 					//TODO? Add logging here to see which exception was triggered?
 					//Log.d("CustomFilter", "THIS REFERRER IS AN EXCEPTION TO ITS RULE!");
-					numExemptions++;
-					Log.d(EXEMPT, "Number of Exceptions seen: " + numExemptions);
-					Log.d(EXEMPT, "Excepted: " + referrer);
-					Log.d(EXEMPT, "Exception: " + exceptions[i].toString());
+					
 					// if(numExemptions%10 == 0)
 					// {
 					// 	Log.d(EXEMPT, "Number of Exceptions seen: " + numExemptions);
 					// }
-					result = true;
-					break;
-				}
-			}
+				// }
+			// }
+			return rule.exceptionMatch(referrer);
 		}	
 		return result;	
 	}

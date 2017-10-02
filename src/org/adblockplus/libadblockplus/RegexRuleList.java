@@ -98,8 +98,8 @@ public class RegexRuleList{
 			while(reader.peek() != JsonToken.END_DOCUMENT) {
 				Log.d(TAG, "Number of Rules: " + numRules);
 				
-				// if(numRules == 1)
-				// 	break;
+				 // if(numRules == 401)
+				 // 	break;
 				
 				thePeek = reader.peek();
 				Log.d(TAG, "Peek: " + thePeek);

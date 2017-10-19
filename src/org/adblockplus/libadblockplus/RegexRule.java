@@ -15,6 +15,7 @@ public class RegexRule implements Comparable<RegexRule>{
 	private int numExceptions = 0;
 	private Pattern regex;
 	private String[] domains;
+	private long numChecked = 0;
 
     public static final String EXEMPT = "Exempted";
 

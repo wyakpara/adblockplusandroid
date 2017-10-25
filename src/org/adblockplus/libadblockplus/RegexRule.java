@@ -15,7 +15,7 @@ public class RegexRule implements Comparable<RegexRule>{
 	private int numExceptions = 0;
 	private Pattern regex;
 	private String[] domains;
-	private long numChecked = 0;
+	private long numberOfBlocks = 0;
 
     public static final String EXEMPT = "Exempted";
 
@@ -195,6 +195,14 @@ public class RegexRule implements Comparable<RegexRule>{
 		}
 		else
 			return false;
+	}
+	
+	public void addToBlocks() {
+		numberOfBlocks++;
+	}
+	
+	public long getNumBlocks() {
+		return numberOfBlocks;
 	}
 	
 	public String regexToString() {

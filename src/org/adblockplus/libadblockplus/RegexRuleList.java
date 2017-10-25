@@ -34,6 +34,35 @@ public class RegexRuleList{
 	public RegexRuleList(int capacity){
 		rules = new RegexRule[capacity];
 	}
+	
+	// Reorders a rule given an index
+	public void reorder(int index) {
+		long priority = rules[index].getNumBlocks();
+		boolean success = bubble(index);
+	}
+	
+	public boolean bubble(int index) {
+        int parentIndex;
+        boolean bubble = false;
+        RegexRule theRule = rules[index];
+        RegexRule parentRule;
+        // Compare rule to its parent
+        parentIndex = (index-1)/2;
+        parentRule = rules[parentIndex];
+		if(theRule.getNumBlocks() > parentRule.getNumBlocks())
+			bubble = true;
+        
+        if(bubble) // if rule has more blocks than its parent, bubble
+        {
+            rules[index] = parentRule; // swap parent with entered child
+            rules[parentIndex] = theRule;
+            if(parentIndex != 0) // If we are not at the root, recurse; otherwise we're done
+            {
+                bubble(parentIndex);   
+            }
+        }
+		return bubble;
+	}
 
 	public void parseRules(Context context){
 		// Sub-regex to potentially match http://, https://
@@ -348,6 +377,10 @@ public class RegexRuleList{
 
 		public RegexRule next(){
 			return rules[nextIndex++];	
+		}
+		
+		public int getCurrentIndex(){
+			return nextIndex;
 		}
 
 		public RegexRule getNextMatch(){

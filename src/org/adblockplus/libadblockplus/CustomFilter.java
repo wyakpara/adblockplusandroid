@@ -9,7 +9,7 @@ public class CustomFilter{
 
 	public RegexRuleList rules;		//collection of regex rules
 	public RegexRule matchedRule = null; //an object representing the individual regex rule that the requestUrl matches
-	
+	private long numBlocked = 0; // Tracks the number of blocked elements for the lifetime of the program.
 	
 	public CustomFilter(Context ABPContext){
 		rules = new RegexRuleList();
@@ -23,6 +23,7 @@ public class CustomFilter{
 		boolean blocked = false;
 		
 		RuleIteratorInterface iter = rules.iterator(requestUrl);
+		// RuleIterator iter = rules.itertor(requestURL);
 		matchedRule = iter.getNextMatch(); //call to an iterator that returns the next rule that matches the request, returns null if no more matches are found
 		//Log.d("CustomFilter", "CustomFilter block function called URL: " + requestUrl + " referrer : " + referrer + "\n");
 
@@ -33,7 +34,20 @@ public class CustomFilter{
 		while(!blocked && matchedRule != null){
 			//Log.d("CustomFilter", "in while loop\n");	//debug statement
 			if(!isExempted(matchedRule, referrer)){
+				// Increment Rule
+				matchedRule.addToBlocks();
+				rules.reorder(iter.getCurrentIndex());
 				blocked = true;
+				numBlocked++;
+				if(numBlocked%1000 == 0)
+				{
+					// log the regex rule list
+					Log.d("HeapTest", "----------------------------------------------"); // Break for visibility
+					Log.d("HeapTest", "Number of system-wide blocks: " + numBlocked);
+					for (RegexRule rule: rules.rules) {
+						Log.d("HeapTest", "" + rule.getNumBlocks());
+					}
+				}
 			}
 			
 			matchedRule = iter.getNextMatch();//if we have not returned by this point then get the next matched rule until there are no more. 

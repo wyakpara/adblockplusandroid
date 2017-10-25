@@ -13,5 +13,7 @@ public interface RuleIteratorInterface{
 	*@throws IllegalStateException if the data structure holding the regex rules is null/has not been instantiated yet/
 	*@return RegexRule: The regular expression rule that matched the given URL, Null if there were no matches. 
 	**/
-	public RegexRule getNextMatch();		
+	public RegexRule getNextMatch();
+	
+	public int getCurrentIndex();
 }	

@@ -71,3 +71,5 @@ for command in commands:
     print(split_command)
     subprocess.call(split_command)
     time.sleep(20)
+split_command = shlex.split('killall adb')
+subprocess.call(split_command)

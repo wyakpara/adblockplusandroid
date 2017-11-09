@@ -56,10 +56,6 @@ sites = [
     'http://wtol.com'
 ]
 commands = ['adb shell am start -a "android.intent.action.VIEW" -d "' + site + '"' for site in sites]
-#    'adb shell am start -a "android.intent.action.VIEW" -d "http://www.espn.com"',
-#    'adb shell am start -a "android.intent.action.VIEW" -d "http://en.blizzard.com"'
-
-# adb logcat -s TestTimer:D &> out.txt 
 
 # Clear Chrome
 split_command = shlex.split('adb shell pm clear com.android.chrome')
@@ -71,3 +67,5 @@ for command in commands:
     print(split_command)
     subprocess.call(split_command)
     time.sleep(20)
+split_command = shlex.split('killall adb')
+subprocess.call(split_command)

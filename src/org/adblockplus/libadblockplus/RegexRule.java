@@ -103,14 +103,9 @@ public class RegexRule implements Comparable<RegexRule>{
 	}
 	
 	public boolean domainMatch(String requestUrl) {
-		URI uri;
 		String requestDomain = "";
-		try{
-			uri = new URI(requestUrl);
-			requestDomain = uri.getHost();
-		} catch(URISyntaxException e) {
-			Log.d(TAG, "Invalid Domain.");
-		}
+		
+		requestDomain = ParseDomain(requestUrl);
 		
 		// Log.d("RequestDomain", "Request URL: " + requestUrl);
 		// Log.d("RequestDomain", "Request domain: " + requestDomain);
@@ -141,17 +136,11 @@ public class RegexRule implements Comparable<RegexRule>{
 	public boolean exceptionMatch(String referrer) {
 		URI uri;
 		String referDomain = "";
-		try{
-			uri = new URI(referrer);
-			referDomain = uri.getHost();
-		} catch(URISyntaxException e) {
-			Log.d(TAG, "Invalid Domain.");
-		}
+		
+		referDomain = ParseDomain(referrer);
 		
 		// Log.d("RequestDomain", "Request URL: " + requestUrl);
 		// Log.d("RequestDomain", "Request domain: " + requestDomain);
-		
-		
 
 			for(String exception: exceptions) {
 
@@ -199,5 +188,32 @@ public class RegexRule implements Comparable<RegexRule>{
 	public String regexToString() {
 		return regex.toString();
 	}
+	
+    public String ParseDomain(String URL) {
+        int start = 0;
+        int end = 0;
+        int i = 0;
+        
+        StringBuilder result = new StringBuilder(URL);
+        // First look for the end of the protocol by looking for "//"
+        while(!(result.charAt(i) == '/' && result.charAt(i+1) == '/')) {
+            i++;
+        }
+        i = i+2;
+        start = i;
+        
+        while(result.charAt(i) != '/') {
+            // Move start if we find an @ symbol.
+            if(result.charAt(i) == '@')
+            {
+                start = i + 1;
+            }
+            i++;
+        }
+        // End is the index that contains the first '/', since substring grabs 
+        // the index - 1
+        end = i;
+        return result.substring(start, end);
+    }
 
 }
